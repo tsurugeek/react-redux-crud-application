@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+//import React, { Component } from 'react';
+import React from 'react';
 
 // class App extends Component {
 //   render() {
@@ -15,18 +16,27 @@ import React, { Component } from 'react';
 // }
 
 const App = () => {
+  const profiles = [
+    {name: "jun", age: 41},
+    {name: "daichi", age: 7},
+    {name: "noritomo"}
+  ]
   return (
     <React.Fragment>
-      <Cat />
-      <Cat />
-      <Cat />
-      <Cat />
+      {
+        profiles.map((profile, index) => {
+          return <User key={index} name={profile.name} age={profile.age}/>
+        })
+      }
     </React.Fragment>
   )
 }
 
-const Cat = () => {
-  return <div>meow</div>
+const User = (props) => {
+  return <div>I am {props.name}, and {props.age} years old.</div>
 }
 
+User.defaultProps = {
+  age: 14
+}
 export default App;
