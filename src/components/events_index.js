@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { read_events } from '../actions'
 
 class EventsIndex extends Component {
   componentDidMount(){
     // componentのライフサイクルは以下。
     // constructor -> render -> componentDidMount
-    // render -> componentDidMountの間にユーザは気づかないらしい
+    // render -> componentDidMountの間にユーザは気づかないらしい、というのは嘘
     console.log('componentDidMount')
     console.log(this.props)
     this.props.read_events()
@@ -31,18 +32,21 @@ class EventsIndex extends Component {
     console.log(props.events)
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Body</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.renderEvents()}
-        </tbody>
-      </table>
+      <React.Fragment>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Body</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.renderEvents()}
+          </tbody>
+        </table>
+        <Link to="/events/new">new event</Link>
+      </React.Fragment>
     )
   }
 }
