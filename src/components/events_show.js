@@ -2,6 +2,8 @@ import React, { Component } from 'react';import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getEvent, putEvent, deleteEvent } from '../actions'
 import { Field, reduxForm } from 'redux-form'
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 class EventsShow extends Component {
   constructor (props) {
@@ -21,10 +23,14 @@ class EventsShow extends Component {
     console.log(field)
     console.log(input)
     return (
-      <div>
-        <input {...input} type={type} placeholder={label} />
-        {touched && error && <span>{error}</span>}
-      </div>
+      <TextField placeholder={label} // upgraded from hintText
+        label={label} // upgraded from floatingLabelText
+        type={type}
+        error={!!(touched && error)} // upgraded from errorText
+        {...input}
+        fullWidth={true}
+        helperText={touched ? error : ''} // upgraded from errorText
+      />
     )
   }
   async onDeleteEvent() {
@@ -54,10 +60,9 @@ class EventsShow extends Component {
           <div><Field label="Title" name="title" component={this.renderField}/></div>
           <div><Field label="Body" name="body" component={this.renderField}/></div>
           <div>
-            <input type="submit" value="Submit" disabled={pristine || submitting || invalid }/>
-            <Link to="/">Cancel</Link>
-            {/* is below to nessesary? */}
-            <Link to="/" onClick={this.onDeleteEvent}>Delete</Link>
+            <Button type="submit" children={"submit"} disabled={pristine || submitting || invalid} />
+            <Button children={<Link to="/events">Cancel</Link>} />
+            <Button children={"delete"} onClick={this.onDeleteEvent} />
           </div>
         </form>
       </React.Fragment>

@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { postEvent } from '../actions'
 import { Field, reduxForm } from 'redux-form'
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 class EventsNew extends Component {
   constructor (props) {
@@ -15,10 +17,14 @@ class EventsNew extends Component {
     console.log(field)
     console.log(input)
     return (
-      <div>
-        <input {...input} type={type} placeholder={label}/>
-        {touched && error && <span>{error}</span>}
-      </div>
+      <TextField placeholder={label} // upgraded from hintText
+        label={label} // upgraded from floatingLabelText
+        type={type}
+        error={!!(touched && error)} // upgraded from errorText
+        {...input}
+        fullWidth={true}
+        helperText={touched ? error : ''} // upgraded from errorText
+        />
     )
   }
   async onSubmit(values) {
@@ -31,15 +37,15 @@ class EventsNew extends Component {
   render() {
     console.log(this.props)
     // handleSubmitは、reduxFormから渡ってきているもの。
-    const { handleSubmit, pristine, submitting } = this.props
+    const { handleSubmit, pristine, submitting, invalid } = this.props
     return (
       <React.Fragment>
         <form onSubmit={handleSubmit(this.onSubmit)}>
           <div><Field label="Title" title="hoge" name="title" component={this.renderField}/></div>
           <div><Field label="Body" name="body" component={this.renderField}/></div>
           <div>
-            <input type="submit" value="Submit" disabled={pristine || submitting}/>
-            <Link to="/events">Cancel</Link>
+            <Button type="submit" children={"submit"} disabled={pristine || submitting || invalid}/>
+            <Button children={<Link to="/events">Cancel</Link>} />
           </div>
         </form>
       </React.Fragment>
