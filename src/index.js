@@ -4,6 +4,10 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
+// [docs] Notify that we will do core/MuiThemeProvider -> styles/ThemeProvider (#13910) @Skn0tt
+// import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { ThemeProvider } from '@material-ui/styles'
+// import { useTheme } from '@material-ui/core/styles';
 
 import './index.css';
 import reducer from './reducers'
@@ -17,17 +21,22 @@ const enhancer = process.env.NODE_ENV === 'development' ?
   composeWithDevTools(applyMiddleware(thunk)) : applyMiddleware(thunk)
 const store = createStore(reducer, enhancer)
 
+// const theme = useTheme()
+
+// https://material-ui.com/styles/advanced/
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={EventsIndex}/>
-        <Route exact path="/events" component={EventsIndex}/>
-        <Route exact path="/events/new" component={EventsNew}/>
-        <Route exact path="/events/:id" component={EventsShow}/>
-      </Switch>
-    </BrowserRouter>
-  </Provider>,
+  <ThemeProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={EventsIndex}/>
+          <Route exact path="/events" component={EventsIndex}/>
+          <Route exact path="/events/new" component={EventsNew}/>
+          <Route exact path="/events/:id" component={EventsShow}/>
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
